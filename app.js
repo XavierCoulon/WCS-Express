@@ -74,9 +74,17 @@ app.get("/movies", (req, res) => {
   const limit = req.query.limit;
   const duration = req.query.duration;
 
-//   if (limit && duration) res.status(200).json(movies.slice(0, limit).filter(movie => movie.duration === duration));
-  if (limit) res.status(200).json(movies.slice(0, limit));
-  if (duration) res.status(200).json(movies.filter((movie) => movie.duration == duration));
+  if (limit && duration)
+    return res
+      .status(200)
+      .json(
+        movies.filter((movie) => movie.duration == duration).slice(0, limit)
+      );
+  if (limit) return res.status(200).json(movies.slice(0, limit));
+  if (duration)
+    return res
+      .status(200)
+      .json(movies.filter((movie) => movie.duration == duration));
 
   return res.status(200).json(movies.slice(0, 10));
 });
