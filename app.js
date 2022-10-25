@@ -1,8 +1,10 @@
+const checkAllowedParam = require("./utils");
 const express = require("express");
 
 const app = express();
 const port = 5001;
 
+const WHITELIST = ["duration", "limit"];
 const movies = [
   {
     id: 1,
@@ -71,9 +73,11 @@ const movies = [
 ];
 
 app.get("/movies", (req, res) => {
+  const paramsAllowed = checkAllowedParam(req.query, WHITELIST);
+  if (!paramsAllowed) return res.status(500).send("Oupsss...");
   const limit = req.query.limit;
   const duration = req.query.duration;
-
+  console.log(req.query);
   if (limit && duration)
     return res
       .status(200)
